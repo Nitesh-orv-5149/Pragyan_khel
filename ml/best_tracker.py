@@ -12,6 +12,8 @@ BLUR_KERNEL = (15, 15)         # Increase for stronger blur
 model = YOLO(MODEL_PATH)   # Auto uses GPU if available, else CPU
 cap = cv.VideoCapture(CAMERA_ID)
 
+model.to("cuda")
+
 # Reduce resolution for speed (important on CPU)
 cap.set(cv.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
