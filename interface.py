@@ -4,28 +4,24 @@ import cv2 as cv
 from PIL import Image, ImageTk
 from detection import YoloTracker
 
-# Standard Professional Theme
 ctk.set_appearance_mode("dark") 
-ctk.set_default_color_theme("dark-blue") # "blue" or "dark-blue" works best
+ctk.set_default_color_theme("dark-blue")
 
-class App(ctk.CTk): # Inherit from ctk.CTk for the modern window frame
+class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         
         self.title("Khel AI for object Segmentation")
         self.geometry("1400x800")
         
-        # Initialize Tracker
         self.tracker = YoloTracker("yolo26x-seg.pt")
         self.cap = None
         self.current_tracks = []
         self.is_live = True
 
-        # --- GRID LAYOUT ---
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # 1. SIDEBAR (Navigation)
         self.sidebar_frame = ctk.CTkFrame(self, width=200, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, sticky="nsew")
         
@@ -44,7 +40,6 @@ class App(ctk.CTk): # Inherit from ctk.CTk for the modern window frame
         self.status_indicator = ctk.CTkLabel(self.sidebar_frame, text="● Disconnected", text_color="grey")
         self.status_indicator.pack(side="bottom", pady=20)
 
-        # 2. MAIN VIEWPORT (Video)
         self.main_frame = ctk.CTkFrame(self, corner_radius=15, fg_color="#101010")
         self.main_frame.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
 
@@ -85,7 +80,6 @@ class App(ctk.CTk): # Inherit from ctk.CTk for the modern window frame
             ret, frame = self.cap.read()
             if ret:
                 h, w = frame.shape[:2]
-                # Maintain aspect ratio in canvas
                 canvas_w = self.canvas.winfo_width()
                 canvas_h = self.canvas.winfo_height()
                 
@@ -99,13 +93,12 @@ class App(ctk.CTk): # Inherit from ctk.CTk for the modern window frame
                 img = Image.fromarray(rgb_frame)
                 self.photo = ImageTk.PhotoImage(image=img)
                 
-                # Center the image on the canvas
                 self.canvas.delete("all")
                 self.canvas.create_image(canvas_w//2, canvas_h//2, image=self.photo, anchor="center")
             else:
                 if not self.is_live: self.cap.set(cv.CAP_PROP_POS_FRAMES, 0)
 
-        self.after(10, self.update_loop) # Use .after() from ctk.CTk
+        self.after(10, self.update_loop) 
 
 if __name__ == "__main__":
     app = App()
