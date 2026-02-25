@@ -5,7 +5,7 @@ import torch
 
 class YoloTracker:
     def __init__(self, default_model="yolo26x-seg.pt"):
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = 'cuda'
         self.model_name = default_model
         self.model = YOLO(default_model).to(self.device)
         self.selected_track_id = None

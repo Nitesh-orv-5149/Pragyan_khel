@@ -14,7 +14,7 @@ class App(ctk.CTk):
         self.title("Khel AI for object Segmentation")
         self.geometry("1400x800")
         
-        self.tracker = YoloTracker("yolo26x-seg.pt")
+        self.tracker = YoloTracker("yolo26l-seg.pt")
         self.cap = None
         self.current_tracks = []
         self.is_live = True
